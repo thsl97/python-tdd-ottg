@@ -4,3 +4,4 @@ virtualenv
 .vagrant
 __pycache__
 *.pyc
+.vscode
