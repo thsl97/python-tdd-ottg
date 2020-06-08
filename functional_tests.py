@@ -1,6 +1,8 @@
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 import unittest
+from selenium.webdriver.common.keys import Keys
+import time
 
 
 class NewVisitorTest(unittest.TestCase):
