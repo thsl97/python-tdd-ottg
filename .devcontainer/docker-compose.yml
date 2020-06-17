@@ -39,6 +39,8 @@ services:
     image: selenium/standalone-firefox-debug:latest
     ports:
       - 4444:4444
+      - 5900:5900
     expose:
       - 4444
-    
+    volumes:
+      - /dev/shm:/dev/shm
