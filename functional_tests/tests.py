@@ -1,4 +1,3 @@
-from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -10,9 +9,13 @@ MAX_WAIT = 10
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
+    host = 'docker-from-docker'
 
     def setUp(self):
-        self.browser = self.start_new_browser_session()
+        self.browser = webdriver.Remote(
+            'http://selenium:4444/wd/hub',
+            webdriver.DesiredCapabilities.FIREFOX
+        )
 
     def tearDown(self):
         self.browser.quit()
@@ -29,11 +32,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
-
-    def start_new_browser_session(self):
-        options = Options()
-        options.headless = True
-        return webdriver.Firefox(options=options)
 
     def test_can_start_a_list_for_one_user(self):
         # Edith has heard about a cool new online to-do app. She goes to check
@@ -93,7 +91,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # We use a new browser session to make sure that no information of
         # Edith's is coming from cookies etc
         self.browser.quit()
-        self.browser = self.start_new_browser_session()
+        self.browser = webdriver.Remote(
+            'http://selenium:4444/wd/hub',
+            webdriver.DesiredCapabilities.FIREFOX
+        )
 
         # Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
