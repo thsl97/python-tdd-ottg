@@ -16,7 +16,8 @@
 	"extensions": [
 		"ms-azuretools.vscode-docker",
 		"ms-python.python",
-		"batisteo.vscode-django"
+		"batisteo.vscode-django",
+		"coolbear.systemd-unit-file"
 	],
 
 	// Uncomment the next line if you want start specific services in your Docker Compose config.
