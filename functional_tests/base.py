@@ -9,13 +9,9 @@ MAX_WAIT = 10
 
 
 class FunctionalTest(StaticLiveServerTestCase):
-    host = 'docker-from-docker'
 
     def setUp(self):
-        self.browser = webdriver.Remote(
-            'http://selenium:4444/wd/hub',
-            webdriver.DesiredCapabilities.FIREFOX
-        )
+        self.browser = webdriver.Firefox()
         staging_server = os.environ.get('STAGING_SERVER')
         if staging_server:
             self.live_server_url = 'http://' + staging_server
