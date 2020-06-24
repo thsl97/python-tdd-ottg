@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lists',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,5 @@ LOGGING = {
         'level': 'INFO'
     },
 }
+
+AUTH_USER_MODEL = 'accounts.User'
