@@ -1,6 +1,7 @@
 from fabric.api import env, run, cd, local
 from fabric.contrib.files import exists, append
 import random
+import os
 
 
 REPO_URL = 'https://github.com/thsl97/python-tdd-ottg.git'
@@ -41,6 +42,8 @@ def _create_or_update_dotenv():
             'abcdefghijklmnopqrstuvwxyz0123456789', k=50
         ))
         append('.env', f'DJANGO_SECRET_KEY={new_secret}')
+    email_password = os.environ['EMAIL_PASSWORD']
+    append('.env', f'EMAIL_PASSWORD={email_password}')
 
 
 def _update_static_files():
