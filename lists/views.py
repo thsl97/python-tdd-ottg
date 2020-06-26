@@ -25,3 +25,7 @@ class NewListView(CreateView, HomePageView):
         list_ = List.objects.create()
         form.save(for_list=list_)
         return redirect(list_)
+
+
+def my_lists(request, email):
+    return render(request, 'my_lists.html')
