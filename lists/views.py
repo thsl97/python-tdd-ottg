@@ -1,7 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from lists.models import List
 from lists.forms import ItemForm, ExistingListItemForm
 from django.views.generic import FormView, CreateView, DetailView
+
+
+User = get_user_model()
 
 
 class HomePageView(FormView):
@@ -14,7 +18,11 @@ class ViewAndAddToList(DetailView, CreateView):
     template_name = 'list.html'
     form_class = ExistingListItemForm
 
-    def get_form(self):
+    def __init__(self):
+        super(ViewAndAddToList, self).__init__()
+        self.object = None
+
+    def get_form(self, *args, **kwargs):
         self.object = self.get_object()
         return self.form_class(for_list=self.object, data=self.request.POST)
 
@@ -22,10 +30,13 @@ class ViewAndAddToList(DetailView, CreateView):
 class NewListView(CreateView, HomePageView):
 
     def form_valid(self, form):
-        list_ = List.objects.create()
+        list_ = List()
+        list_.owner = self.request.user
+        list_.save()
         form.save(for_list=list_)
         return redirect(list_)
 
 
 def my_lists(request, email):
-    return render(request, 'my_lists.html')
+    owner = User.objects.get(email=email)
+    return render(request, 'my_lists.html', {'owner': owner})
