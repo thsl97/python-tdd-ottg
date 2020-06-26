@@ -49,15 +49,17 @@
 				<div class="col-md-6 jumbotron">
 					<div class="text-center">
 						<h1>{% block header_text %}{% endblock header_text %}</h1>
-						<form method="post" action="{% block form_action %}{% endblock form_action %}">
-							{% csrf_token %}
-								{{ form.text }}
-								{% if form.errors %}
-									<div class="form-group has-error">
-										<span class="help-block">{{ form.text.errors }}</span>
-									</div>
-								{% endif %}
-						</form>
+                        {% block list_form %}
+                            <form method="post" action="{% block form_action %}{% endblock form_action %}">
+                                {% csrf_token %}
+                                    {{ form.text }}
+                                    {% if form.errors %}
+                                        <div class="form-group has-error">
+                                            <span class="help-block">{{ form.text.errors }}</span>
+                                        </div>
+                                    {% endif %}
+                            </form>
+                        {% endblock list_form %}
 					</div>
 				</div>
 			</div>
@@ -67,6 +69,12 @@
 					{% endblock table %}
 				</div>
 			</div>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    {% block extra_content %}
+                    {% endblock extra_content %}
+                </div>
+            </div>
 		</div>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
