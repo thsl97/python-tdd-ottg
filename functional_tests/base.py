@@ -1,15 +1,15 @@
+import os
+import time
 from datetime import datetime
 
-from selenium import webdriver
-import time
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-import os
-
 from selenium.webdriver.common.keys import Keys
 
-from .server_tools import reset_database
-
+from .management.commands.create_session import create_pre_authenticated_session
+from .server_tools import reset_database, create_session_on_server
 
 MAX_WAIT = 10
 SCREEN_DUMP_LOCATION = os.path.join(
@@ -108,3 +108,16 @@ class FunctionalTest(StaticLiveServerTestCase):
             windowid=self._windowid,
             timestamp=timestamp
         )
+
+    def create_pre_authenticated_session(self, email):
+        if self.staging_server:
+            session_key = create_session_on_server(self.staging_server, email)
+        else:
+            session_key = create_pre_authenticated_session(email)
+        # Visit domain to create cookie, using 404 because it loads faster
+        self.browser.get(f'{self.live_server_url}/404_no_such_url/')
+        self.browser.add_cookie(dict(
+            name=settings.SESSION_COOKIE_NAME,
+            value=session_key,
+            path='/',
+        ))
